@@ -4,11 +4,13 @@ import exceptions.GameTypeNotFound;
 import org.apache.commons.lang3.EnumUtils;
 
 import java.util.List;
+import java.util.Map;
 
 public class SingleGameStats {
 
     private GameType gameType;
     private List<List<String>> playerStats;
+    private List<Player> players;
 
     public SingleGameStats() {}
 
@@ -30,5 +32,20 @@ public class SingleGameStats {
         }
     }
 
+    public GameType getGameType() {
+        return gameType;
+    }
+
+    public List<List<String>> getPlayerStats() {
+        return playerStats;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
+    }
 
 }
