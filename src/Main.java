@@ -11,6 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         GameReader gameReader = new CSVGameReader();
+
         try {
 //            gameReader.readGame("csv/game1.csv");
             gameReader.readGame("csv/game2.csv");
