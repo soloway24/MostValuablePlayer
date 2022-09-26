@@ -1,7 +1,7 @@
 package model;
 
-import handlers.implementations.BasketballHandler;
-import handlers.implementations.HandballHandler;
+import handlers.implementations.BasketballGameHandler;
+import handlers.implementations.HandballGameHandler;
 import handlers.interfaces.GameHandler;
 
 public enum GameType {
@@ -9,16 +9,18 @@ public enum GameType {
     BASKETBALL {
         @Override
         public GameHandler getGameHandler() {
-            return new BasketballHandler();
+            return new BasketballGameHandler();
         }
     } ,
     HANDBALL {
         @Override
         public GameHandler getGameHandler() {
-            return new HandballHandler();
+            return new HandballGameHandler();
         }
     };
 
     public abstract GameHandler getGameHandler();
+
+
 
 }

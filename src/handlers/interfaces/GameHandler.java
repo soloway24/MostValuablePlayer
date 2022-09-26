@@ -7,13 +7,24 @@ import java.util.Map;
 
 public abstract class GameHandler {
 
-    private Map<Integer, Integer> indexToPointsMap;
+    protected Map<Integer, Integer> indexToMultiplierMap;
 
-    public abstract Map<Integer, Integer> getIndexToMultiplierMap();
+    public GameHandler(){
+        createAndFillIndexToMultiplierMap();
+    }
+    public Map<Integer, Integer> getIndexToMultiplierMap() {
+        return indexToMultiplierMap;
+    }
+
+    protected abstract void createAndFillIndexToMultiplierMap();
+
+    public SingleGameStats handleGame(SingleGameStats stats) {
+        // TO DO
+        // use map to calculate added points
 
 
-    public void handleGame(SingleGameStats stats) {
-
+        // add points to players in List<Player> players in SingleGameStats
+        return stats;
     }
 
     public int getPointsForWin() {

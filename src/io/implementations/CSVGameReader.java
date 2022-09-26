@@ -1,5 +1,6 @@
 package io.implementations;
 
+import exceptions.GameTypeNotFound;
 import io.interfaces.GameReader;
 import model.SingleGameStats;
 
@@ -13,12 +14,11 @@ import java.util.List;
 public class CSVGameReader implements GameReader {
     private static final String DELIMITER = ";";
     @Override
-    public SingleGameStats readGame(String filePath) throws IOException {
+    public SingleGameStats readGame(String filePath) throws IOException, GameTypeNotFound {
         List<List<String>> fileLines = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                // TO DO carry out delimiter
                 String[] values = line.split(DELIMITER);
                 fileLines.add(Arrays.asList(values));
             }
