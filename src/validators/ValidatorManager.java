@@ -1,6 +1,5 @@
 package validators;
 
-import handlers.interfaces.GameHandler;
 import model.GameType;
 import validators.interfaces.FileFormatValidator;
 

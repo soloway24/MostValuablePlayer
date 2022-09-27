@@ -1,13 +1,13 @@
 package model;
 
-import exceptions.GameTypeNotFound;
+import exceptions.GameTypeNotSupported;
+import exceptions.IncorrectFileFormatException;
 import org.apache.commons.lang3.EnumUtils;
 import utils.FileFormatConstants;
+import validators.interfaces.FileFormatValidator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SingleGameStats {
 
@@ -17,29 +17,24 @@ public class SingleGameStats {
 
     public SingleGameStats() {}
 
-    public SingleGameStats(List<List<String>> fileLines) throws GameTypeNotFound {
+    public SingleGameStats(List<List<String>> fileLines) throws GameTypeNotSupported, IncorrectFileFormatException {
         gameType = getGameTypeFromFileLines(fileLines);
         playerStats = removeGameTypeNameFromLines(fileLines);
-
-        // TO DO
-        // validate csv body
-
-
-
-
+        validatePlayerStats(playerStats);
         players = new ArrayList<>();
     }
 
-    private void validatePlayerStats(List<List<String>> stats) {
-
+    private void validatePlayerStats(List<List<String>> stats) throws IncorrectFileFormatException {
+        FileFormatValidator validator = gameType.getFileFormatValidator();
+        validator.validate(stats);
     }
 
-    private GameType getGameTypeFromFileLines(List<List<String>> fileLines) throws GameTypeNotFound {
+    private GameType getGameTypeFromFileLines(List<List<String>> fileLines) throws GameTypeNotSupported {
         String gameTypeStr = fileLines.get(FileFormatConstants.GAME_TYPE_LINE_INDEX).get(0).trim();
         if(EnumUtils.isValidEnum(GameType.class, gameTypeStr)) {
             return GameType.valueOf(gameTypeStr);
         } else {
-            throw new GameTypeNotFound();
+            throw new GameTypeNotSupported(gameTypeStr);
         }
     }
     private List<List<String>> removeGameTypeNameFromLines(List<List<String>> fileLines) {

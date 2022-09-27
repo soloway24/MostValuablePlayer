@@ -1,24 +1,26 @@
-import exceptions.GameTypeNotFound;
-import io.implementations.CSVGameReader;
-import io.interfaces.GameReader;
-import model.GameType;
+import exceptions.GameTypeNotSupported;
+import exceptions.IncorrectFileFormatException;
+import io.GameReader;
+import model.Player;
 import model.SingleGameStats;
-import org.apache.commons.lang3.EnumUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
-        GameReader gameReader = new CSVGameReader();
+        String fileExtension = ".csv";
+        String delimiter = ";";
+        GameReader gameReader = new GameReader(fileExtension, delimiter);
 
         try {
-//            gameReader.readGame("csv/game1.csv");
-            gameReader.readGame("csv/game2.csv");
-
-        } catch (IOException | GameTypeNotFound e) {
-            throw new RuntimeException(e);
+            List<SingleGameStats> games = gameReader.readDirectory("csv");
+            MVPCalculator mvpCalculator = new MVPCalculator();
+            Player mvpPlayer = mvpCalculator.calculateMVP(games);
+            System.out.println("Most Valuable Player is: " + mvpPlayer);
+        } catch (IOException | GameTypeNotSupported | IncorrectFileFormatException e) {
+            e.printStackTrace();
         }
-
     }
 }
