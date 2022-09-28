@@ -5,9 +5,9 @@ import handlers.implementations.HandballGameHandler;
 import handlers.interfaces.GameHandler;
 import model.interfaces.HandleableGame;
 import model.interfaces.ValidatableGame;
-import validators.implementations.BasketballFileFormatValidator;
-import validators.implementations.HandBallFileFormatValidator;
-import validators.interfaces.FileFormatValidator;
+import validators.implementations.BasketballFileValidator;
+import validators.implementations.HandBallFileValidator;
+import validators.interfaces.FileValidator;
 
 public enum GameType implements HandleableGame, ValidatableGame {
 
@@ -18,8 +18,8 @@ public enum GameType implements HandleableGame, ValidatableGame {
         }
 
         @Override
-        public FileFormatValidator getFileFormatValidator() {
-            return new BasketballFileFormatValidator();
+        public FileValidator getFileFormatValidator() {
+            return new BasketballFileValidator();
         }
     } ,
     HANDBALL {
@@ -29,10 +29,10 @@ public enum GameType implements HandleableGame, ValidatableGame {
         }
 
         @Override
-        public FileFormatValidator getFileFormatValidator() {
-            return new HandBallFileFormatValidator();
+        public FileValidator getFileFormatValidator() {
+            return new HandBallFileValidator();
         }
-    };
+    }
 
 
 

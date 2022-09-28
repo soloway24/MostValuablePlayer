@@ -1,8 +1,8 @@
 package model.interfaces;
 
-import validators.interfaces.FileFormatValidator;
+import validators.interfaces.FileValidator;
 
 public interface ValidatableGame {
 
-    FileFormatValidator getFileFormatValidator();
+    FileValidator getFileFormatValidator();
 }

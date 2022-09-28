@@ -4,29 +4,17 @@ import exceptions.GameTypeNotSupported;
 import exceptions.IncorrectFileFormatException;
 import org.apache.commons.lang3.EnumUtils;
 import utils.FileFormatConstants;
-import validators.interfaces.FileFormatValidator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SingleGameStats {
 
     private GameType gameType;
-    private List<List<String>> playerStats;
-    private List<Player> players;
+    private final List<List<String>> playerStats;
 
-    public SingleGameStats() {}
-
-    public SingleGameStats(List<List<String>> fileLines) throws GameTypeNotSupported, IncorrectFileFormatException {
+    public SingleGameStats(List<List<String>> fileLines) throws GameTypeNotSupported {
         gameType = getGameTypeFromFileLines(fileLines);
         playerStats = removeGameTypeNameFromLines(fileLines);
-        validatePlayerStats(playerStats);
-        players = new ArrayList<>();
-    }
-
-    private void validatePlayerStats(List<List<String>> stats) throws IncorrectFileFormatException {
-        FileFormatValidator validator = gameType.getFileFormatValidator();
-        validator.validate(stats);
     }
 
     private GameType getGameTypeFromFileLines(List<List<String>> fileLines) throws GameTypeNotSupported {
@@ -48,10 +36,6 @@ public class SingleGameStats {
 
     public List<List<String>> getPlayerStats() {
         return playerStats;
-    }
-
-    public List<Player> getPlayers() {
-        return players;
     }
 
     public void setGameType(GameType gameType) {

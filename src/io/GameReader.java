@@ -3,9 +3,10 @@ package io;
 import exceptions.GameTypeNotSupported;
 import exceptions.IncorrectFileFormatException;
 import model.SingleGameStats;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,21 +32,6 @@ public class GameReader {
             }
         }
         return new SingleGameStats(fileLines);
-    }
-
-    public List<SingleGameStats> readDirectory(String directoryPath) throws GameTypeNotSupported, IOException, IncorrectFileFormatException {
-        File folder = new File(directoryPath);
-        if(!folder.isDirectory())
-            throw new IllegalArgumentException("You should provide a correct directory path.");
-
-        List<SingleGameStats> games = new ArrayList<>();
-        FileFilter fileFilter = new WildcardFileFilter("*" + fileExtension);
-        File[] files = Objects.requireNonNull(folder.listFiles(fileFilter));
-        for(File file : files) {
-            SingleGameStats game = readGame(file.getPath());
-            games.add(game);
-        }
-        return games;
     }
 
     public String getFileExtension() {
