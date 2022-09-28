@@ -21,27 +21,21 @@ public abstract class FileValidator {
     }
 
     private void validateFormatFull(List<List<String>> records) throws IncorrectFileFormatException {
-        validateFormatGeneral(records);
-        validateFormatSpecificGameType(records);
+        validateRecordLength(records);
+        validateNotBlankFields(records);
     }
 
     private void validateDataFull(List<List<String>> records) throws IncorrectFileDataException {
         validateDataGeneral(records);
-        validateDataSpecificGameType(records);
+        validateDataGameTypeSpecific(records);
     }
-
-    private void validateFormatGeneral(List<List<String>> records) throws IncorrectFileFormatException {
-        validateRecordLength(records);
-        validateNotBlankFields(records);
-    }
-    protected abstract void validateFormatSpecificGameType(List<List<String>> records);
 
     private void validateDataGeneral(List<List<String>> records) throws IncorrectFileDataException {
         validateNicknames(records);
         validateTeamSizesAndUniqueNumbersInTeams(records);
     }
 
-    protected abstract void validateDataSpecificGameType(List<List<String>> records);
+    protected abstract void validateDataGameTypeSpecific(List<List<String>> records) throws IncorrectFileDataException;
 
     private void validateRecordLength(List<List<String>> records) throws IncorrectFileFormatException {
         for(List<String> record : records) {
@@ -103,4 +97,14 @@ public abstract class FileValidator {
 
     }
 
+    protected void checkGameHasWinner(Map<String, Integer> teamToPointsMap) throws IncorrectFileDataException {
+        Set<Integer> points = new HashSet<>(teamToPointsMap.values());
+        int maxPoints = points.stream().max(Integer::compare).orElseThrow();
+        int minPoints = points.stream().min(Integer::compare).orElseThrow();
+        if (maxPoints == minPoints)
+            throw new IncorrectFileDataException("Game does not have a winner.");
+    }
+
+    protected abstract void validatePointFields(List<List<String>> records) throws IncorrectFileDataException;
+    protected abstract void validateGameWinner(List<List<String>> records) throws IncorrectFileDataException;
 }

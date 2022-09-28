@@ -7,7 +7,6 @@ import model.SingleGameStats;
 import validators.interfaces.FileValidator;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ValidatorManager {
@@ -32,11 +31,6 @@ public class ValidatorManager {
         GameType gameType = game.getGameType();
         FileValidator validator = getValidatorByGameType(gameType);
         validator.validate(game.getPlayerStats());
-    }
-    public void validateAll(List<SingleGameStats> games) throws IncorrectFileFormatException, IncorrectFileDataException {
-        for (SingleGameStats game : games) {
-            validate(game);
-        }
     }
 
 }
