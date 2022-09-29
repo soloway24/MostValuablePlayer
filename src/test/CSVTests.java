@@ -65,6 +65,7 @@ public class CSVTests {
             Assertions.fail();
         }
         catch (FileWrappedException | IncorrectFileDataException e) {
+            System.out.println(e.getMessage());
             Assertions.assertTrue(true);
         }
     }

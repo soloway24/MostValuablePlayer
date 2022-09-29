@@ -1,4 +1,4 @@
-package main.handlers.interfaces;
+package main.handlers.abstractions;
 
 import main.exceptions.IncorrectFileDataException;
 import main.model.Player;
@@ -11,6 +11,7 @@ import main.utils.UtilMethods;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class GameHandler {
 
@@ -22,11 +23,11 @@ public abstract class GameHandler {
 
     protected abstract void createAndFillIndexToMultiplierMap();
 
-    public SingleGameStats handleGame(SingleGameStats stats) throws IncorrectFileDataException {
-        Map<String, Integer> teamToPointsMap = getTeamToPointsMap(stats);
-        String winnerTeam = getWinnerTeamName(teamToPointsMap);
+    public void handleGame(SingleGameStats game) throws IncorrectFileDataException {
+        String winnerTeam = getWinnerTeamName(game);
+
         List<Player> gamePlayers = new ArrayList<>();
-        for(List<String> record : stats.getPlayerStats()) {
+        for(List<String> record : game.getPlayerStats()) {
 
             int rating = 0;
             for(Map.Entry<Integer, Integer> entry : indexToMultiplierMap.entrySet()) {
@@ -35,8 +36,8 @@ public abstract class GameHandler {
                 int multiplier = entry.getValue();
                 rating += points * multiplier;
             }
-            String playerTeam = record.get(FileFormatConstants.PLAYER_TEAM_NAME_INDEX);
 
+            String playerTeam = record.get(FileFormatConstants.PLAYER_TEAM_NAME_INDEX);
             if(playerTeam.equals(winnerTeam))
                 rating += getPointsForWin();
 
@@ -49,13 +50,13 @@ public abstract class GameHandler {
             gamePlayers.add(player);
         }
         System.out.println();
-        stats.setPlayersWithRatings(gamePlayers);
-        return stats;
+        game.setPlayersWithRatings(gamePlayers);
     }
 
     protected abstract Map<String, Integer> getTeamToPointsMap(SingleGameStats game) throws IncorrectFileDataException;
 
-    protected String getWinnerTeamName(Map<String, Integer> teamToPointsMap) throws IncorrectFileDataException {
+    protected String getWinnerTeamName(SingleGameStats game) throws IncorrectFileDataException {
+        Map<String, Integer> teamToPointsMap = getTeamToPointsMap(game);
         List<TeamWithPoints> teams = new ArrayList<>();
         for(Map.Entry<String, Integer> entry : teamToPointsMap.entrySet()) {
             TeamWithPoints teamWithPoints = new TeamWithPoints(entry.getKey(), entry.getValue());
@@ -72,4 +73,16 @@ public abstract class GameHandler {
         return GameRulesConstants.STANDARD_WIN_POINTS;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameHandler that = (GameHandler) o;
+        return Objects.equals(indexToMultiplierMap, that.indexToMultiplierMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(indexToMultiplierMap);
+    }
 }

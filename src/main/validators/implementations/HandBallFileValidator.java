@@ -3,7 +3,7 @@ package main.validators.implementations;
 import main.exceptions.IncorrectFileDataException;
 import main.utils.FileFormatConstants;
 import main.utils.UtilMethods;
-import main.validators.interfaces.FileValidator;
+import main.validators.abstractions.FileValidator;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,18 +13,18 @@ public class HandBallFileValidator extends FileValidator {
 
     private final Map<String, Integer> teamToGoalsMap;
     public HandBallFileValidator() {
-        RECORD_LENGTH = 6;
+        recordLength = 6;
         teamToGoalsMap = new HashMap<>();
     }
 
     @Override
     protected void validateDataGameTypeSpecific(List<List<String>> records) throws IncorrectFileDataException {
         validatePointFields(records);
-        reinitializeTeamToGoalsMap(records);
+        refillTeamToGoalsMap(records);
         validateReceivedGoals(records);
     }
 
-    private void reinitializeTeamToGoalsMap(List<List<String>> records) throws IncorrectFileDataException {
+    private void refillTeamToGoalsMap(List<List<String>> records) throws IncorrectFileDataException {
         teamToGoalsMap.clear();
         for(List<String> record : records) {
 

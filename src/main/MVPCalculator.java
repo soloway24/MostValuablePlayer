@@ -2,11 +2,13 @@ package main;
 
 import main.exceptions.IncorrectFileDataException;
 import main.handlers.HandlerManager;
-import main.handlers.interfaces.GameHandler;
 import main.model.Player;
 import main.model.SingleGameStats;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MVPCalculator {
@@ -21,16 +23,11 @@ public class MVPCalculator {
 
     public Player calculateMVP(List<SingleGameStats> games) throws IncorrectFileDataException {
         for(SingleGameStats game : games) {
-            GameHandler handler = handlerManager.getHandlerByGameType(game.getGameType());
-            SingleGameStats reviewedGame = handler.handleGame(game);
-            addLatestRatingsToPlayers(reviewedGame);
+            handlerManager.handleGame(game);
+            addLatestRatingsToPlayers(game);
         }
         System.out.println(nicknamesToPlayersMap.values().stream().sorted().collect(Collectors.toList()));
         return findPlayerWithMaxRating();
-    }
-
-    private Player findPlayerWithMaxRating() {
-        return nicknamesToPlayersMap.values().stream().max(Player::compareTo).orElseThrow();
     }
 
     private void addLatestRatingsToPlayers(SingleGameStats gameStats) throws IncorrectFileDataException {
@@ -46,6 +43,9 @@ public class MVPCalculator {
         }
     }
 
+    private Player findPlayerWithMaxRating() {
+        return nicknamesToPlayersMap.values().stream().max(Player::compareTo).orElseThrow();
+    }
     public Map<String, Player> getNicknamesToPlayersMap() {
         return nicknamesToPlayersMap;
     }
@@ -60,5 +60,18 @@ public class MVPCalculator {
 
     public void setHandlerManager(HandlerManager handlerManager) {
         this.handlerManager = handlerManager;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MVPCalculator that = (MVPCalculator) o;
+        return Objects.equals(nicknamesToPlayersMap, that.nicknamesToPlayersMap) && Objects.equals(handlerManager, that.handlerManager);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nicknamesToPlayersMap, handlerManager);
     }
 }

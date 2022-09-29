@@ -25,18 +25,10 @@ public class MVPApplication {
     }
 
     public List<SingleGameStats> processFilesFromDirectory(String directoryPath, String fileExtension, String delimiter) throws FileWrappedException, NoFilesWithExtensionFoundException, NoDirectoryFoundException {
-        File folder = new File(directoryPath);
-        if(!folder.isDirectory())
-            throw new NoDirectoryFoundException(directoryPath);
-
         GameReader gameReader = new GameReader(fileExtension, delimiter);
         List<SingleGameStats> games = new ArrayList<>();
-        FileFilter fileFilter = new WildcardFileFilter("*" + fileExtension);
-        File[] files = Objects.requireNonNull(folder.listFiles(fileFilter));
 
-        if(files.length == 0) {
-            throw new NoFilesWithExtensionFoundException(directoryPath, fileExtension);
-        }
+        File[] files = getFilesOfExtensionFromDirectoryFile(directoryPath, fileExtension);
         for(File file : files) {
             try {
                 SingleGameStats game = gameReader.readGame(file.getPath());
@@ -47,6 +39,20 @@ public class MVPApplication {
             }
         }
         return games;
+    }
+
+    private File getDirectoryFromPath(String directoryPath) throws NoDirectoryFoundException {
+        File directory = new File(directoryPath);
+        if(!directory.isDirectory())
+            throw new NoDirectoryFoundException(directoryPath);
+        return directory;
+    }
+
+
+    private File[] getFilesOfExtensionFromDirectoryFile(String directoryPath, String fileExtension) throws NoDirectoryFoundException {
+        File directory = getDirectoryFromPath(directoryPath);
+        FileFilter fileFilter = new WildcardFileFilter("*" + fileExtension);
+        return Objects.requireNonNull(directory.listFiles(fileFilter));
     }
 
     public Player calculateMVP(List<SingleGameStats> games) throws IncorrectFileDataException {
@@ -85,5 +91,18 @@ public class MVPApplication {
                     + directoryPath + "'.\n");
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MVPApplication that = (MVPApplication) o;
+        return Objects.equals(validatorManager, that.validatorManager) && Objects.equals(mvpCalculator, that.mvpCalculator);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(validatorManager, mvpCalculator);
     }
 }

@@ -1,6 +1,6 @@
 package main.model.interfaces;
 
-import main.handlers.interfaces.GameHandler;
+import main.handlers.abstractions.GameHandler;
 
 public interface HandleableGame {
 

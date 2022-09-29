@@ -6,6 +6,7 @@ import main.utils.FileFormatConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SingleGameStats {
 
@@ -51,5 +52,27 @@ public class SingleGameStats {
 
     public void setPlayersWithRatings(List<Player> playersWithRatings) {
         this.playersWithRatings = playersWithRatings;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SingleGameStats that = (SingleGameStats) o;
+        return gameType == that.gameType && Objects.equals(playerStats, that.playerStats) && Objects.equals(playersWithRatings, that.playersWithRatings);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gameType, playerStats, playersWithRatings);
+    }
+
+    @Override
+    public String toString() {
+        return "SingleGameStats{" +
+                "gameType=" + gameType +
+                ", playerStats=" + playerStats +
+                ", playersWithRatings=" + playersWithRatings +
+                '}';
     }
 }

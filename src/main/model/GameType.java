@@ -2,12 +2,12 @@ package main.model;
 
 import main.handlers.implementations.BasketballGameHandler;
 import main.handlers.implementations.HandballGameHandler;
-import main.handlers.interfaces.GameHandler;
+import main.handlers.abstractions.GameHandler;
 import main.model.interfaces.HandleableGame;
 import main.model.interfaces.ValidatableGame;
 import main.validators.implementations.BasketballFileValidator;
 import main.validators.implementations.HandBallFileValidator;
-import main.validators.interfaces.FileValidator;
+import main.validators.abstractions.FileValidator;
 
 public enum GameType implements HandleableGame, ValidatableGame {
 

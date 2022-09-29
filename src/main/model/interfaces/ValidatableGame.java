@@ -1,6 +1,6 @@
 package main.model.interfaces;
 
-import main.validators.interfaces.FileValidator;
+import main.validators.abstractions.FileValidator;
 
 public interface ValidatableGame {
 

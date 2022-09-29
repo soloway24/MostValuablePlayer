@@ -1,4 +1,4 @@
-package main.validators.interfaces;
+package main.validators.abstractions;
 
 import main.exceptions.IncorrectFileDataException;
 import main.exceptions.IncorrectFileFormatException;
@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 public abstract class FileValidator {
 
-    protected static int RECORD_LENGTH = 0;
-    protected static int NUMBER_OF_TEAMS = 2;
+    protected int recordLength = 0;
+    protected int numberOfTeams = 2;
     public void validate(List<List<String>> records) throws IncorrectFileFormatException, IncorrectFileDataException {
         validateFormatFull(records);
         validateDataFull(records);
@@ -36,8 +36,8 @@ public abstract class FileValidator {
 
     private void validateRecordLength(List<List<String>> records) throws IncorrectFileFormatException {
         for(List<String> record : records) {
-            if(record.size() != RECORD_LENGTH)
-                throw new IncorrectFileFormatException(RECORD_LENGTH - record.size() + " fields are missing.");
+            if(record.size() != recordLength)
+                throw new IncorrectFileFormatException(recordLength - record.size() + " fields are missing.");
         }
     }
 
@@ -80,7 +80,7 @@ public abstract class FileValidator {
             }
         }
 
-        if(teamToNumbersMap.size() != NUMBER_OF_TEAMS)
+        if(teamToNumbersMap.size() != numberOfTeams)
             throw new IncorrectFileDataException("Incorrect number of teams for the given game type.");
 
         List<Integer> teamSizes = teamToNumbersMap.values().stream().map(Set::size).collect(Collectors.toList());
@@ -95,4 +95,33 @@ public abstract class FileValidator {
     }
 
     protected abstract void validatePointFields(List<List<String>> records) throws IncorrectFileDataException;
+
+    public int getRecordLength() {
+        return recordLength;
+    }
+
+    public void setRecordLength(int recordLength) {
+        this.recordLength = recordLength;
+    }
+
+    public int getNumberOfTeams() {
+        return numberOfTeams;
+    }
+
+    public void setNumberOfTeams(int numberOfTeams) {
+        this.numberOfTeams = numberOfTeams;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FileValidator that = (FileValidator) o;
+        return recordLength == that.recordLength && numberOfTeams == that.numberOfTeams;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(recordLength, numberOfTeams);
+    }
 }

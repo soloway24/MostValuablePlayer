@@ -1,7 +1,7 @@
 package main.handlers.implementations;
 
 import main.exceptions.IncorrectFileDataException;
-import main.handlers.interfaces.GameHandler;
+import main.handlers.abstractions.GameHandler;
 
 import java.util.HashMap;
 import java.util.List;

@@ -3,14 +3,14 @@ package main.validators.implementations;
 import main.exceptions.IncorrectFileDataException;
 import main.utils.FileFormatConstants;
 import main.utils.UtilMethods;
-import main.validators.interfaces.FileValidator;
+import main.validators.abstractions.FileValidator;
 
 import java.util.List;
 
 public class BasketballFileValidator extends FileValidator {
 
     public BasketballFileValidator() {
-        RECORD_LENGTH = 7;
+        recordLength = 7;
     }
 
     @Override

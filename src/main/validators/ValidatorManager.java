@@ -4,10 +4,11 @@ import main.exceptions.IncorrectFileDataException;
 import main.exceptions.IncorrectFileFormatException;
 import main.model.GameType;
 import main.model.SingleGameStats;
-import main.validators.interfaces.FileValidator;
+import main.validators.abstractions.FileValidator;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ValidatorManager {
 
@@ -33,4 +34,16 @@ public class ValidatorManager {
         validator.validate(game.getPlayerStats());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ValidatorManager that = (ValidatorManager) o;
+        return Objects.equals(gameTypeToValidatorMap, that.gameTypeToValidatorMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gameTypeToValidatorMap);
+    }
 }

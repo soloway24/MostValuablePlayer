@@ -1,7 +1,7 @@
 package main.handlers.implementations;
 
 import main.exceptions.IncorrectFileDataException;
-import main.handlers.interfaces.GameHandler;
+import main.handlers.abstractions.GameHandler;
 import main.model.SingleGameStats;
 import main.utils.FileFormatConstants;
 import main.utils.GameRulesConstants;
